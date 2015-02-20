@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="GFNLinkProxy" title="GoodForNothing Link Proxy" version_string="1.0.3" version_id="1000371" url="https://gfnlabs.com/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation/>
+  <admin_permissions/>
+  <admin_style_properties/>
+  <admin_templates>
+    <template title="gfnlinkproxy_option_js"><![CDATA[<script>
+<!--
+$(document).ready(function()
+{
+	var auto = $('#ctrl_optionsgfnlinkproxy_autoRedirectDelay').closest('fieldset'),
+	noAuto = $('#ctrl_optionsgfnlinkproxy_title').closest('fieldset'),
+	toggler = $('#ctrl_optionsgfnlinkproxy_enableAutoRedirect_1'),
+	toggleOptions = function()
+	{
+		if (toggler.is(':checked'))
+		{
+			auto.xfSlideIn('medium');
+			noAuto.xfSlideOut('medium');
+		}
+		else
+		{
+			noAuto.xfSlideIn('medium');
+			auto.xfSlideOut('medium');
+		}
+	};
+	
+	toggler.click(toggleOptions);
+	toggleOptions();
+});
+//-->
+</script>]]></template>
+  </admin_templates>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners>
+    <listener event_id="front_controller_post_view" execute_order="10" callback_class="GFNLinkProxy_Listener_FrontController" callback_method="postView" active="1" hint="" description="Updates the HTML output to add proxied URL..."/>
+  </code_event_listeners>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups>
+    <group group_id="gfnlinkproxy" display_order="531" debug_only="0"/>
+    <option option_id="gfnlinkproxy_autoRedirectDelay" edit_format="spinbox" data_type="integer" can_backup="1">
+      <default_value>5</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="200"/>
+    </option>
+    <option option_id="gfnlinkproxy_autoRedirectMessage" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>You are now leaving &lt;b&gt;{board}&lt;/b&gt; and being redirected to &lt;b&gt;{url}&lt;/b&gt; in {delay} seconds...</default_value>
+      <edit_format_params>rows=2</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="220"/>
+    </option>
+    <option option_id="gfnlinkproxy_autoRedirectTitle" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>Redirecting...</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="210"/>
+    </option>
+    <option option_id="gfnlinkproxy_blockInvalidReferrer" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>1</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="1"/>
+    </option>
+    <option option_id="gfnlinkproxy_enableAutoRedirect" edit_format="onoff" data_type="boolean" can_backup="1">
+      <default_value>0</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="100"/>
+    </option>
+    <option option_id="gfnlinkproxy_message" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>The referring site you are being redirected to is not controlled by us, so please remember not to enter your Username and Password unless you are on &lt;b&gt;{boardUrl}&lt;/b&gt;. Also be sure to download software from sites you trust. And remember to read the site's Privacy Policy.</default_value>
+      <edit_format_params>rows=2</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="310"/>
+    </option>
+    <option option_id="gfnlinkproxy_option_js" edit_format="template" data_type="string" can_backup="1">
+      <default_value></default_value>
+      <edit_format_params>gfnlinkproxy_option_js</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="0"/>
+    </option>
+    <option option_id="gfnlinkproxy_title" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>Please be careful...</default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="300"/>
+    </option>
+    <option option_id="gfnlinkproxy_whiteListDomain" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value></default_value>
+      <edit_format_params>rows=3</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="10"/>
+    </option>
+    <option option_id="gfnlinkproxy_whiteListProtocol" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value>mailto
+ftp
+ftps
+sftp</default_value>
+      <edit_format_params>rows=3</edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="gfnlinkproxy" display_order="20"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="gfnlinkproxy_auto_redirect_message" version_id="1000371" version_string="1.0.3"><![CDATA[You are now leaving <b>{board}</b> and being redirected to <b>{url}</b> in {delay} seconds...]]></phrase>
+    <phrase title="gfnlinkproxy_auto_redirect_title" version_id="1000371" version_string="1.0.3"><![CDATA[Redirecting...]]></phrase>
+    <phrase title="gfnlinkproxy_redirect_message" version_id="1000371" version_string="1.0.3"><![CDATA[The referring site you are being redirected to is not controlled by us, so please remember not to enter your Username and Password unless you are on <b>{boardUrl}</b>. Also be sure to download software from sites you trust. And remember to read the site's Privacy Policy.]]></phrase>
+    <phrase title="gfnlinkproxy_redirect_title" version_id="1000371" version_string="1.0.3"><![CDATA[Please be careful...]]></phrase>
+    <phrase title="option_gfnlinkproxy_autoRedirectDelay" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Delay]]></phrase>
+    <phrase title="option_gfnlinkproxy_autoRedirectDelay_explain" version_id="1000371" version_string="1.0.3"><![CDATA[The time of delay (in seconds) before the user is redirected.<br />Enter <strong>0</strong> to redirect the user to out-going link without showing the intermediary page. This also means that the referrer wont be (partially) anonymized.]]></phrase>
+    <phrase title="option_gfnlinkproxy_autoRedirectMessage" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Message]]></phrase>
+    <phrase title="option_gfnlinkproxy_autoRedirectMessage_explain" version_id="1000371" version_string="1.0.3"><![CDATA[You can change the text that appears as the message or disclaimer on the redirection page.<br />
+You may use the following variables: {board}, {boardUrl}, {url}, {delay}.<br />
+<strong>This option has been deprecated to allow phrasing of the redirect page.<br />
+Please edit the <code>gfnlinkproxy_auto_redirect_message</code> phrase.<br />
+The variables listed above are still available.</strong>]]></phrase>
+    <phrase title="option_gfnlinkproxy_autoRedirectTitle" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Title]]></phrase>
+    <phrase title="option_gfnlinkproxy_autoRedirectTitle_explain" version_id="1000371" version_string="1.0.3"><![CDATA[You can change the text that appears as the title on the redirection page.<br />
+<strong>This option has been deprecated to allow phrasing of the redirect page.<br />
+Please edit the <code>gfnlinkproxy_auto_redirect_title</code> phrase.</strong>]]></phrase>
+    <phrase title="option_gfnlinkproxy_blockInvalidReferrer" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Block Invalid Referrers]]></phrase>
+    <phrase title="option_gfnlinkproxy_blockInvalidReferrer_explain" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[If enabled, the referrer HTTP header will be checked (if available) if the URL is referred from the same origin. If not, a 'no permission' message will be dispatched.]]></phrase>
+    <phrase title="option_gfnlinkproxy_enableAutoRedirect" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Enable automatic redirection]]></phrase>
+    <phrase title="option_gfnlinkproxy_enableAutoRedirect_explain" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[You can disable automatic redirection if you want your visitor to click "Continue" on the redirection page to visit the page, instead of automatically being redirected.]]></phrase>
+    <phrase title="option_gfnlinkproxy_message" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Message]]></phrase>
+    <phrase title="option_gfnlinkproxy_message_explain" version_id="1000371" version_string="1.0.3"><![CDATA[You can change the text that appears as the message or disclaimer on the redirection page.<br />
+You may use the following variables: {board}, {boardUrl}, {url}.<br />
+<strong>This option has been deprecated to allow phrasing of the redirect page.<br />
+Please edit the <code>gfnlinkproxy_redirect_message</code> phrase.<br />
+The variables listed above are still available.</strong>]]></phrase>
+    <phrase title="option_gfnlinkproxy_option_js" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Adding JS]]></phrase>
+    <phrase title="option_gfnlinkproxy_option_js_explain" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[]]></phrase>
+    <phrase title="option_gfnlinkproxy_title" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Title]]></phrase>
+    <phrase title="option_gfnlinkproxy_title_explain" version_id="1000371" version_string="1.0.3"><![CDATA[You can change the text that appears as the title on the redirection page.<br />
+<strong>This option has been deprecated to allow phrasing of the redirect page.<br />
+Please edit the <code>gfnlinkproxy_redirect_title</code> phrase.</strong>]]></phrase>
+    <phrase title="option_gfnlinkproxy_whiteListDomain" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Domain White List]]></phrase>
+    <phrase title="option_gfnlinkproxy_whiteListDomain_explain" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Enter the domain names/hostnames that you do not want to anonymize/redirect. <b>Only one domain per line.</b><br />
+If you want to white list an entire domain including its sub-domains, only add <b>domain.com</b>.<br />
+If you want to white list a domain's sub-domains and not the top level one, add <b>.domain.com</b>.]]></phrase>
+    <phrase title="option_gfnlinkproxy_whiteListProtocol" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Protocol White List]]></phrase>
+    <phrase title="option_gfnlinkproxy_whiteListProtocol_explain" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[Enter the protocols you want to prevent anonymization. <b>One protocol per line.</b>]]></phrase>
+    <phrase title="option_group_gfnlinkproxy" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[GoodForNothing Link Proxy]]></phrase>
+    <phrase title="option_group_gfnlinkproxy_description" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="public">
+      <prefix original_prefix="redirect" class="GFNLinkProxy_Route_Prefix_Redirect" build_link="none"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties/>
+  <templates>
+    <template title="gfnlinkproxy_redirect" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[<xen:title>{xen:phrase redirecting}</xen:title>
+<xen:h1></xen:h1>
+
+<xen:container var="$head.fontface"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:400,600" /></xen:container>
+
+<xen:require css="gfnlinkproxy_redirect.css" />
+
+<xen:navigation>
+	<xen:breadcrumb href="{$to}">{xen:phrase redirecting}</xen:breadcrumb>
+</xen:navigation>
+
+<div id="redirectWrapper">
+	<section class="header">
+		<h1>{$title}</h1>
+	</section>
+	
+	<section class="message">
+		{xen:raw $message}
+	</section>
+	
+	<section class="footer">
+		<a href="{$url}" class="forward">{xen:phrase continue}<xen:if is="{$autoRedirect}"> (<span class="delay">{$delay}</span>)</xen:if></a>
+		<a href="{$referer}" class="cancel">{xen:phrase cancel}</a>
+	</section>
+</div>
+
+<xen:if is="{$autoRedirect}">
+	<script>
+	<!--
+		var delayCount = parseInt("{xen:jsescape $delay}") + 1,
+		countdown = function()
+		{
+			if (--delayCount > -1)
+			{
+				$('.delay').text(delayCount);
+				setTimeout(countdown, 1000);
+			}
+			else
+			{
+				XenForo.redirect("{xen:jsescape $url}");
+			}
+		}
+		
+		$(document).ready(countdown);
+	//-->
+	</script>
+</xen:if>]]></template>
+    <template title="gfnlinkproxy_redirect.css" version_id="1000011" version_string="1.0.0 Alpha 1"><![CDATA[#redirectWrapper {
+	max-width: 640px;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
+	border-radius: 5px;
+	display: block;
+	margin: 20px auto;
+	padding: 30px 40px;
+	box-shadow: 0 0 5px rgba(0,0,0,.3);
+	font-family: 'Open Sans', Tahoma, sans-serif;
+}
+
+#redirectWrapper .header h1 {
+	border-bottom: 1px solid #dddddd;
+	font-size: 20px;
+	font-weight: normal;
+	margin: 0 0 20px;
+	padding-bottom: 10px;
+}
+
+#redirectWrapper .message {
+	color: #222222;
+	font-size: 13px;
+	line-height: 20px;
+	display: block;
+}
+
+#redirectWrapper .message p {
+	margin: 5px 0 15px;
+	display: block;
+}
+
+#redirectWrapper .footer {
+	padding: 20px 0 0;
+	overflow: hidden;
+}
+
+#redirectWrapper .footer a {
+	float: right;
+	border: 1px solid rgba(0,0,0,.2);
+	background-color: #00a5f0;
+	border-radius: 5px;
+	box-shadow: 0 0 0 1px rgba(255,255,255,.4) inset;
+	color: #ffffff;
+	font-size: 11px;
+	padding: 10px;
+	min-width: 45px;
+	text-align: center;
+	text-shadow: 0 -1px rgba(0,0,0,.2);
+	font-weight: 600;
+	text-decoration: none !important;
+	margin: 0 10px;
+	display: inline-block;
+	transition: all .2s linear 0s;
+	-o-transition: all .2s linear 0s;
+	-moz-transition: all .2s linear 0s;
+	-webkit-transition: all .2s linear 0s;
+}
+
+#redirectWrapper .footer a:active,
+#redirectWrapper .footer a:focus,
+#redirectWrapper .footer a:hover {
+	box-shadow: 0 1px 2px rgba(0,0,0,.2) inset;
+}
+
+#redirectWrapper .footer a.cancel {
+	background-color: #eeeeee;
+	color: #888888;
+	text-shadow: 0 1px 0 #ffffff;
+}
+
+#redirectWrapper .footer a.forward:hover {
+	background-color: #24bbff;
+}
+
+#redirectWrapper .footer a.forward:active {
+	background-color: #0082bd;
+}
+
+<xen:if is="{xen:property enableResponsive}">
+	@media (max-width:{xen:property maxResponsiveMediumWidth}) {
+		#redirectWrapper {
+			padding: 10px 20px;
+		}
+		
+		#redirectWrapper .footer {
+			padding: 10px 0 0;
+		}
+	}
+	
+	@media (max-width:{xen:property maxResponsiveNarrowWidth}) {
+		#redirectWrapper .footer {
+			text-align: center;
+		}
+		
+		#redirectWrapper .footer a {
+			margin-top: 10px;
+			float: none;
+		}
+	}
+</xen:if>]]></template>
+  </templates>
+  <public_template_modifications/>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
